@@ -1,0 +1,3 @@
+[submodule "ko_trading"]
+	path = ko_trading
+	url = https://github.com/jing2uo/ko_trading.git
