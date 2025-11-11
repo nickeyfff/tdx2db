@@ -40,18 +40,21 @@ check-unrar:
 download:
 	@echo "Downloading TDX data tool..."
 	mkdir -p $(TMP_DIR)
-	curl -s -L -o $(RAR_FILE) $(TDX_URL) || (echo "Download failed"; exit 1)
+	curl -s -L --retry 3 --retry-delay 5 -o $(RAR_FILE) $(TDX_URL) || (echo "Download failed"; exit 1)
+	@echo "Verifying downloaded file..."
+	@if [ ! -s $(RAR_FILE) ]; then echo "Error: Downloaded file is empty"; exit 1; fi
 
 extract:
 	@echo "Extracting RAR archive..."
 	mkdir -p $(EXTRACT_DIR)
-	@if command -v /opt/homebrew/bin/unrar >/dev/null 2>&1; then \
-		echo "Using real unrar..."; \
-		unrar x -o+ $(RAR_FILE) $(EXTRACT_DIR)/; \
+	@if command -v unrar >/dev/null 2>&1; then \
+		echo "Using unrar..."; \
+		unrar x -o+ $(RAR_FILE) $(EXTRACT_DIR)/ || (echo "Extraction failed with unrar"; exit 1); \
 	else \
 		echo "Using unar..."; \
-		unar -f -output-directory $(EXTRACT_DIR) $(RAR_FILE); \
+		unar -output-directory $(EXTRACT_DIR) $(RAR_FILE) || (echo "Extraction failed with unar"; exit 1); \
 	fi
+	@echo "Extraction completed successfully"
 
 move_datatool:
 	@echo "Moving data tool to embed directory..."

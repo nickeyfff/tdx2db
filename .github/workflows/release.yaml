@@ -24,7 +24,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             unrar \
-            unar \
             build-essential \
             wget \
             python3.12 \
