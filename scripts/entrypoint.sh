@@ -41,13 +41,9 @@ case "$1" in
         shift  # 移除tdx2db参数
         exec /tdx2db "$@"
         ;;
-    "run_csindex_update")
+    "run_csindex_and_shenwan_industry_update")
         cd /opt/ko_trading
-        exec python3 cron.py run_csindex_update
-        ;;
-    "run_shenwan_industry_update")
-        cd /opt/ko_trading
-        exec python3 cron.py run_shenwan_industry_update
+        exec python3 cron.py
         ;;
     "help"|"-h"|"--help")
         show_help
