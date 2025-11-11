@@ -35,7 +35,7 @@ user-install: build
 	@echo "NOTE: Ensure $(LOCAL_BIN) is in your PATH"
 
 check-unrar:
-	@command -v unrar >/dev/null 2>&1 || { echo >&2 "Error: unrar required..."; exit 1; }
+	@command -v unrar >/dev/null 2>&1 || command -v unar >/dev/null 2>&1 || { echo >&2 "Error: unrar or unar required..."; exit 1; }
 
 download:
 	@echo "Downloading TDX data tool..."
@@ -45,12 +45,22 @@ download:
 extract:
 	@echo "Extracting RAR archive..."
 	mkdir -p $(EXTRACT_DIR)
-	unrar x -o+ $(RAR_FILE) $(EXTRACT_DIR)/ > /dev/null
+	@if command -v /opt/homebrew/bin/unrar >/dev/null 2>&1; then \
+		echo "Using real unrar..."; \
+		unrar x -o+ $(RAR_FILE) $(EXTRACT_DIR)/; \
+	else \
+		echo "Using unar..."; \
+		unar -f -output-directory $(EXTRACT_DIR) $(RAR_FILE); \
+	fi
 
 move_datatool:
 	@echo "Moving data tool to embed directory..."
 	mkdir -p $(TDX_EMBED_DIR)
-	cp $(EXTRACT_DIR)/v4/datatool $(TDX_EMBED_DIR)/
+	@if [ -f "$(EXTRACT_DIR)/datatool/v4/datatool" ]; then \
+		cp $(EXTRACT_DIR)/datatool/v4/datatool $(TDX_EMBED_DIR)/; \
+	else \
+		cp $(EXTRACT_DIR)/v4/datatool $(TDX_EMBED_DIR)/; \
+	fi
 
 clean-tmp:
 	@echo "Cleaning temporary files..."

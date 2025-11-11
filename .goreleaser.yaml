@@ -44,6 +44,8 @@ dockers_v2:
     dockerfile: ./Containerfile
     extra_files:
       - export_for_qlib
+      - scripts/entrypoint.sh
+      - ko_trading
     platforms:
       - linux/amd64
     images:
@@ -53,7 +55,7 @@ dockers_v2:
       - "latest"
     labels:
       "org.opencontainers.image.title": "tdx2db"
-      "org.opencontainers.image.description": "Convert and import TDX data into DuckDB"
+      "org.opencontainers.image.description": "Convert and import TDX data into DuckDB with Python support"
       "org.opencontainers.image.created": "{{ .Date }}"
       "org.opencontainers.image.revision": "{{ .FullCommit }}"
       "org.opencontainers.image.version": "{{ .Version }}"

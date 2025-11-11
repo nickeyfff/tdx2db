@@ -28,6 +28,33 @@
 docker run --rm --platform=linux/amd64 ghcr.io/jing2uo/tdx2db:latest -h
 ```
 
+### 支持 Python 脚本的 Docker 镜像
+
+最新版本的 Docker 镜像集成了 [ko_trading](https://github.com/jing2uo/ko_trading) 子工程，支持在容器中运行 Python 数据处理脚本：
+
+```bash
+# 更新中证指数成分股数据
+docker run --rm --platform=linux/amd64 \
+  -v "$(pwd)":/data \
+  ghcr.io/jing2uo/tdx2db:latest \
+  run_csindex_update
+
+# 更新申万行业分类数据
+docker run --rm --platform=linux/amd64 \
+  -v "$(pwd)":/data \
+  ghcr.io/jing2uo/tdx2db:latest \
+  run_shenwan_industry_update
+
+# 查看所有支持的命令
+docker run --rm --platform=linux/amd64 ghcr.io/jing2uo/tdx2db:latest help
+```
+
+镜像特性：
+- 集成了 Python 3.12 和 uv 包管理器
+- 预装了 ta-lib、duckdb、vectorbt 等量化分析依赖
+- 包含完整的 ko_trading 代码库
+- 支持参数化入口，统一调用 tdx2db 和 Python 脚本
+
 ### 二进制安装
 
 从 [releases](https://github.com/jing2uo/tdx2db/releases) 下载对应系统的二进制文件，解压后移至 `$PATH`，二进制仅支持在 Linux 中直接使用，Windows 建议开启 wsl ：
