@@ -15,8 +15,7 @@ tdx2db命令：
     tdx2db cron             - 执行增量更新
 
 ko_trading命令：
-    run_csindex_update      - 更新中证指数成分股数据
-    run_shenwan_industry_update - 更新申万行业分类数据
+    run_csindex_and_shenwan_industry_update - 更新中证指数成分股和申万行业分类数据
 
 其他：
     help                    - 显示此帮助信息
@@ -24,8 +23,7 @@ ko_trading命令：
 示例：
     $0 tdx2db init
     $0 tdx2db cron
-    $0 run_csindex_update
-    $0 run_shenwan_industry_update
+    $0 run_csindex_and_shenwan_industry_update
 EOF
 }
 
