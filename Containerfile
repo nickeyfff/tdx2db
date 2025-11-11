@@ -6,8 +6,8 @@ RUN apt-get update && apt-get install -y \
     wget \
     gzip \
     python3.12 \
-    python3.12-pip \
-    python3.12-venv \
+    python3-pip \
+    python3-venv \
     build-essential \
     wget \
     && update-ca-certificates \

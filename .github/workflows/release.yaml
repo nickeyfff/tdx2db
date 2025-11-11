@@ -27,8 +27,8 @@ jobs:
             build-essential \
             wget \
             python3.12 \
-            python3.12-pip \
-            python3.12-venv
+            python3-pip \
+            python3-venv
 
       - name: Set up Go
         uses: actions/setup-go@v5
