@@ -161,6 +161,52 @@ func QueryAllSymbols(db *sql.DB) ([]string, error) {
 	return symbols, nil
 }
 
+func CreateQfq5MinView(db *sql.DB) error {
+	query := fmt.Sprintf(`
+	CREATE OR REPLACE VIEW %s AS
+	SELECT
+		s.symbol,
+		s.datetime,
+		s.volume,
+		s.amount,
+		ROUND(s.open  * f.qfq_factor, 2) AS open,
+		ROUND(s.high  * f.qfq_factor, 2) AS high,
+		ROUND(s.low   * f.qfq_factor, 2) AS low,
+		ROUND(s.close * f.qfq_factor, 2) AS close
+	FROM %s s
+	JOIN %s f ON s.symbol = f.symbol AND CAST(s.datetime AS DATE) = f.date;
+	`, "v_qfq_stocks_5min", FiveMinLineSchema.Name, FactorSchema.Name)
+
+	_, err := db.Exec(query)
+	if err != nil {
+		return fmt.Errorf("failed to create or replace view %s: %w", "v_qfq_stocks_5min", err)
+	}
+	return nil
+}
+
+func CreateHfq5MinView(db *sql.DB) error {
+	query := fmt.Sprintf(`
+	CREATE OR REPLACE VIEW %s AS
+	SELECT
+		s.symbol,
+		s.datetime,
+		s.volume,
+		s.amount,
+		ROUND(s.open  * f.hfq_factor, 2) AS open,
+		ROUND(s.high  * f.hfq_factor, 2) AS high,
+		ROUND(s.low   * f.hfq_factor, 2) AS low,
+		ROUND(s.close * f.hfq_factor, 2) AS close
+	FROM %s s
+	JOIN %s f ON s.symbol = f.symbol AND CAST(s.datetime AS DATE) = f.date;
+	`, "v_hfq_stocks_5min", FiveMinLineSchema.Name, FactorSchema.Name)
+
+	_, err := db.Exec(query)
+	if err != nil {
+		return fmt.Errorf("failed to create or replace view %s: %w", "v_hfq_stocks_5min", err)
+	}
+	return nil
+}
+
 func GetStockTableLatestDate(db *sql.DB) (time.Time, error) {
 	date, err := GetLatestDateFromTable(db, StocksSchema.Name)
 	if err != nil {
