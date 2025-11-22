@@ -45,7 +45,7 @@ dockers_v2:
     platforms:
       - linux/amd64
     images:
-      - "ghcr.io/jing2uo/tdx2db"
+      - "ghcr.io/nickeyfff/tdx2db"
     tags:
       - "{{ .Version }}"
       - "latest"
