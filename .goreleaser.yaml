@@ -28,7 +28,7 @@ archives:
 
 release:
   github:
-    owner: jing2uo
+    owner: nickeyfff
     name: tdx2db
 
 changelog:
