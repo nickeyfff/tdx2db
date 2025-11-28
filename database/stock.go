@@ -39,7 +39,7 @@ func CreateQfqView(db *sql.DB) error {
 		ROUND(s.low   * f.qfq_factor, 2) AS low,
 		ROUND(s.close * f.qfq_factor, 2) AS close,
 		t.turnover,
-	FROM %s s
+	FROM v_stocks_daily s
 	JOIN %s f ON s.symbol = f.symbol AND s.date = f.date
 	LEFT JOIN %s t ON s.symbol = t.symbol AND s.date = t.date;
 	`, QfqViewName, StocksSchema.Name, FactorSchema.Name, TurnoverViewName)
@@ -64,7 +64,7 @@ func CreateHfqView(db *sql.DB) error {
 		ROUND(s.low   * f.hfq_factor, 2) AS low,
 		ROUND(s.close * f.hfq_factor, 2) AS close,
 		t.turnover,
-	FROM %s s
+	FROM v_stocks_daily s
 	JOIN %s f ON s.symbol = f.symbol AND s.date = f.date
 	LEFT JOIN %s t ON s.symbol = t.symbol AND s.date = t.date;
 	`, HfqViewName, StocksSchema.Name, FactorSchema.Name, TurnoverViewName)

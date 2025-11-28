@@ -119,3 +119,28 @@ func GetLatestDateFromTable(db *sql.DB, tableName string) (time.Time, error) {
 
 	return time.Time{}, nil
 }
+
+func CreateDailyStockViews(db *sql.DB) error {
+	// 创建日线临时表
+	_, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS raw_stocks_daily_temp AS 
+		SELECT * FROM raw_stocks_daily 
+		WITH NO DATA;
+	`)
+	if err != nil {
+		return fmt.Errorf("failed to create raw_stocks_daily_temp table: %w", err)
+	}
+
+	// 创建或替换日线视图
+	_, err = db.Exec(`
+		CREATE OR REPLACE VIEW v_stocks_daily AS
+		SELECT * FROM raw_stocks_daily
+		UNION ALL
+		SELECT * FROM raw_stocks_daily_temp;
+	`)
+	if err != nil {
+		return fmt.Errorf("failed to create v_stocks_daily view: %w", err)
+	}
+
+	return nil
+}

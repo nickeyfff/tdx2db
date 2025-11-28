@@ -55,6 +55,11 @@ func Cron(dbPath string, minline string) error {
 		return fmt.Errorf("failed to calculate factors: %w", err)
 	}
 
+	fmt.Printf("🔄 创建日线临时表和视图\n")
+	if err := database.CreateDailyStockViews(db); err != nil {
+		return fmt.Errorf("failed to create daily stock views: %w", err)
+	}
+
 	fmt.Printf("🔄 更新前复权数据视图 (%s)\n", database.QfqViewName)
 	if err := database.CreateQfqView(db); err != nil {
 		return fmt.Errorf("failed to create qfq view: %w", err)
