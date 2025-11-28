@@ -42,7 +42,7 @@ func CreateQfqView(db *sql.DB) error {
 	FROM v_stocks_daily s
 	JOIN %s f ON s.symbol = f.symbol AND s.date = f.date
 	LEFT JOIN %s t ON s.symbol = t.symbol AND s.date = t.date;
-	`, QfqViewName, StocksSchema.Name, FactorSchema.Name, TurnoverViewName)
+	`, QfqViewName, FactorSchema.Name, TurnoverViewName)
 
 	_, err := db.Exec(query)
 	if err != nil {
@@ -67,7 +67,7 @@ func CreateHfqView(db *sql.DB) error {
 	FROM v_stocks_daily s
 	JOIN %s f ON s.symbol = f.symbol AND s.date = f.date
 	LEFT JOIN %s t ON s.symbol = t.symbol AND s.date = t.date;
-	`, HfqViewName, StocksSchema.Name, FactorSchema.Name, TurnoverViewName)
+	`, HfqViewName, FactorSchema.Name, TurnoverViewName)
 
 	_, err := db.Exec(query)
 	if err != nil {
