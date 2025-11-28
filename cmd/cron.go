@@ -70,6 +70,12 @@ func Cron(dbPath string, minline string) error {
 		return fmt.Errorf("failed to create hfq view: %w", err)
 	}
 
+	fmt.Printf("🔄 更新5分钟数据视图\n")
+	parquetGlob := filepath.Join(DataDir, "parquet_5", "*", "*.parquet")
+	if err := database.Create5MinStockViews(db, parquetGlob); err != nil {
+		return fmt.Errorf("failed to create 5min stock views: %w", err)
+	}
+
 	fmt.Println("🚀 今日任务执行成功")
 	return nil
 }
