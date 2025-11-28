@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"os"
 	"path/filepath"
 	"runtime"
 	"time"
@@ -11,7 +12,14 @@ import (
 var maxConcurrency = runtime.NumCPU()
 var Today = time.Now().Truncate(24 * time.Hour)
 
-var DataDir, _ = utils.GetCacheDir()
+var DataDir = func() string {
+	if path := os.Getenv("DATA_PATH"); path != "" {
+		return path
+	}
+	dir, _ := utils.GetCacheDir()
+	return dir
+}()
+
 var VipdocDir = filepath.Join(DataDir, "vipdoc")
 var StockCSV = filepath.Join(DataDir, "stock.csv")
 var OneMinLineCSV = filepath.Join(DataDir, "1min.csv")
